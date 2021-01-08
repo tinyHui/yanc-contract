@@ -1,0 +1,54 @@
+syntax="proto3";
+
+option go_package = "github.com/tinyHui/yanc-contract/plugin";
+
+package pluginComm;
+
+service Daemon {
+    rpc deploy(PluginDeployConfig) returns (DeployResp) {}
+    rpc getMetaInfo(PluginQuery) returns (PluginMetaInfo) {}
+}
+
+message DeployConfig {
+    string name = 1;
+    int32 replicas = 2;
+}
+
+message ContainerConfig {
+    string name = 1;
+    string image = 2;
+    string version = 3;
+    int32 port = 4;
+}
+
+message PluginDeployConfig {
+    DeployConfig deployConfig = 1;
+    ContainerConfig ContainerConfig = 2;
+}
+
+message DeployResp {
+    enum Reason {
+        SUCCESS = 0;
+    }
+}
+
+message PluginQuery {
+    string name = 1;
+}
+
+enum Availablity {
+    Available = 0;
+    PartialAvailable = 1;
+    Down = 2;
+}
+
+message PluginMeta {
+    string name = 1;
+    string version = 2;
+    int32 port = 3;
+}
+
+message PluginMetaInfo {
+    Availablity available = 1;
+    PluginMeta pluginMeta = 2;
+}
